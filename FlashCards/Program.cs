@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using FlashCards;
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data.SqlClient;
 
@@ -8,27 +9,78 @@ class Program
 {
     static void Main()
     {
-        //string connectionString = ConfigurationManager.ConnectionStrings["connectionstring"].ConnectionString;
-        string connectionString = "Data Source=(LocalDb)\\PersonalProjectDB;Initial Catalog=FlashcardsDB";
-        using var connection = new SqlConnection(connectionString);
-        connection.Open();
-        var tableCmd = connection.CreateCommand();
-        tableCmd.CommandText =
-            $@"IF NOT EXISTS (SELECT * FROM sys.tables t
-            JOIN sys.schemas s ON (t.schema_id = s.schema_id) 
-            WHERE s.name = 'dbo' AND t.name = 't1')
-            CREATE TABLE TestTABLE (
-            Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-            name VARCHAR(55)
-            );";
-        try
-        {
-            tableCmd.ExecuteNonQuery();
-            Console.WriteLine("Succeed!");
-            Console.ReadLine();
-        }
-        catch (Exception ex) { Console.WriteLine(ex.Message); }
+        bool endApp = false;
 
-        Console.ReadLine();
+        while (!endApp)
+        {
+            Console.Clear();
+            Console.WriteLine("\n-------------------------------\n");
+            Console.WriteLine("\tFLASHCARDS");
+            Console.WriteLine("\n-------------------------------");
+            Console.WriteLine("1. Manage Stacks");            
+            Console.WriteLine("2. Study");
+            Console.WriteLine("3. Study Session");
+            Console.WriteLine("4. Exit");
+            Console.WriteLine("-------------------------------");
+            Console.Write("Your option: ");
+
+            var userOption = Console.ReadLine();
+            switch (userOption)
+            {
+                case "1":
+                    StackMenu();
+                    break;
+                case "2":
+                    break; 
+                case "3":
+                    break;
+                case "4":
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    internal static void StackMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("\n-------------------------------\n");
+        Console.WriteLine("\tMANAGE STACKS");
+        Console.WriteLine("\n-------------------------------");
+        Console.WriteLine("-------------------------------");
+        Console.WriteLine("1. Create a new stack");
+        Console.WriteLine("2. Update stack");
+        Console.WriteLine("3. Delete stack");
+        Console.WriteLine("4. Manage cards");
+        Console.WriteLine("-------------------------------");
+        Console.Write("Your option: ");
+
+        var userOption = Console.ReadLine();
+        switch (userOption)
+        {
+            case "1":
+                UserInputs ip = new();
+                var cardTableName = ip.GetStringInputs("Your stack name is: ");
+                DatabaseCreate db = new(cardTableName);
+                Console.ReadLine();
+                break;
+            case "2":
+                break;
+            case "3":
+                break;
+            case "4":
+                CardMenu();
+                break;
+            default:
+                break;
+        }
+    }
+    internal static void CardMenu()
+    {
+        Console.Clear();
+        //GetComponent();
+        Console.WriteLine("\n-------------------------------\n");
+        Console.Write("Pick a stack: ");
+        
     }
 }
