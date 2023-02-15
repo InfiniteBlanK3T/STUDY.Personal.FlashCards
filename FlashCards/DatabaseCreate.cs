@@ -58,8 +58,8 @@ namespace FlashCards
             try
             {
                 stackTable.ExecuteNonQuery();
-                insertStackToTable.ExecuteNonQuery();
                 cardTable.ExecuteNonQuery();
+                insertStackToTable.ExecuteNonQuery();                
                 Console.WriteLine("Suceed!");
                 Console.ReadLine();
             }
