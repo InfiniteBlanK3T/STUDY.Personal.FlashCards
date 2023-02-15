@@ -17,7 +17,7 @@ namespace FlashCards
         public DatabaseCreate(string tableName)
         {
             _cardTableName= tableName;
-            CheckCreateTables();
+            CreateTables();
         }
 
         public string CardTableName
@@ -25,13 +25,13 @@ namespace FlashCards
             get { return _cardTableName; }
             set { _cardTableName = value; }
         }
-        public void CheckCreateTables()
+        public void CreateTables()
         {            
             using var connection = new SqlConnection(connectionString);
             connection.Open();
 
-            var stackTable = connection.CreateCommand();
-            stackTable.CommandText =
+            var makeStackTable = connection.CreateCommand();
+            makeStackTable.CommandText =
                 $@"IF NOT EXISTS (SELECT * FROM sys.tables t
                 JOIN sys.schemas s ON (t.schema_id = s.schema_id) 
                 WHERE s.name = 'dbo' AND t.name = 'stacks')
@@ -40,13 +40,13 @@ namespace FlashCards
                 stack_name VARCHAR(55)
                 );";
 
-            var insertStackToTable = connection.CreateCommand();
-            insertStackToTable.CommandText =
+            var insertEntryToStackToTable = connection.CreateCommand();
+            insertEntryToStackToTable.CommandText =
                 $@"INSERT INTO stacks (stack_name) VALUES
                 ('{CardTableName}');";
 
-            var cardTable = connection.CreateCommand();
-            cardTable.CommandText =
+            var makeCardTable = connection.CreateCommand();
+            makeCardTable.CommandText =
                 $@"IF NOT EXISTS (SELECT * FROM sys.tables t
                 JOIN sys.schemas s on (t.schema_id = s.schema_id)
                 WHERE s.name = 'dbo' AND t.name = '{CardTableName}')
@@ -57,11 +57,9 @@ namespace FlashCards
                 );";
             try
             {
-                stackTable.ExecuteNonQuery();
-                cardTable.ExecuteNonQuery();
-                insertStackToTable.ExecuteNonQuery();                
-                Console.WriteLine("Suceed!");
-                Console.ReadLine();
+                makeStackTable.ExecuteNonQuery();
+                makeCardTable.ExecuteNonQuery();
+                insertEntryToStackToTable.ExecuteNonQuery();                               
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }            
         }
