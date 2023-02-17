@@ -6,27 +6,33 @@ using System.Threading.Tasks;
 
 namespace FlashCards
 {
-    public class StacksManagement : ICommonFeatures
-    {
-        private int _stackId;
+    public class StacksManagement : TableType
+    {        
         private string _stackName;
 
-        public StacksManagement(string StackName)
+        public string StackName
         {
-            _stackName = StackName;
+            get
+            {
+                return _stackName;
+            }
+            set
+            {
+                _stackName = value;
+            }
         }
 
-        public void GetComponent()
+        public override void Insert()
         {
 
         }
 
-        public void UpdateComponent()
+        public override void Update()
         {
 
         }
 
-        public void DeleteComponent()
+        public override void Delete()
         {
 
         }

@@ -1,10 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Configuration;
-using System.Reflection.PortableExecutable;
 
 namespace FlashCards
 {
-    public class CRUDControllers
+    public class CrudControllers
     {
         readonly string connectionString = ConfigurationManager.ConnectionStrings["connectionstring"].ConnectionString;
 
@@ -15,48 +14,36 @@ namespace FlashCards
 
             var getTable = connection.CreateCommand();
             getTable.CommandText =
-                $"SELECT * FROM {tableName} ";
-            SetUpTable(tableName, getTable);
+                $"SELECT * FROM {tableName}";
+            SettingStackTable(getTable);
         }
 
-        public void SetUpTable(string tableName,SqlCommand query)
+        public void SettingStackTable(SqlCommand query)
         {
-            BuildingTable table = new BuildingTable();
-            List<object> tableComponent = new List<object>();
-
+            BuildingTable table = new();
+            List<StacksManagement> tableData = new();
             try
             {
-                SqlDataReader reader = query.ExecuteReader();                
+                SqlDataReader reader = query.ExecuteReader();
 
-                if (reader.HasRows)
+                if(reader.HasRows)
                 {
-
-                    while (reader.Read())
+                    while(reader.Read())
                     {
-                        object tableType = new();
-                        if (tableName == "stacks")
-                        {
-                            tableType = new StackSession
+                        tableData.Add(
+                            new StacksManagement
                             {
-                                StackId = reader.GetInt32(0),
-                                StackName = reader.GetString(1)
-                            };
-                            
-                        }
-                        else
-                        {
-                            tableType = new CardSession
-                            {
-                                CardId = reader.GetInt32(0),
-                                CardFront = reader.GetString(1),
-                                CardBack = reader.GetString(2)
-                            };
-                            tableComponent.Add(tableType);
-                        }
-                        tableComponent.Add(tableType);
+                                Id = reader.GetInt32(0),
+                                StackName = reader.GetString(1),
+                            }
+                            );
                     }
                 }
-                table.MakingTable(tableComponent, tableName);
+                else
+                {
+                    Console.WriteLine("No rows found");
+                }
+                table.MakingStackTable(tableData);
             }
             catch(Exception ex)
             {

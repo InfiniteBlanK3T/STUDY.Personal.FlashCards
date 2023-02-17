@@ -1,27 +1,22 @@
 ﻿using ConsoleTableExt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlashCards
 {
     public class BuildingTable
     {
-        public void MakingTable(List<object> list, string tableName)
+        public void MakingStackTable(List<StacksManagement> list)
         {
             Console.Clear();
             var tableData = new List<List<object>> { };
             foreach (var data in list)
             {
-                tableData.Add(new List<object> { data });
+                tableData.Add(new List<object> { data.Id, data.StackName });
             }
 
             ConsoleTableBuilder
                 .From(tableData)
-                .WithTitle($"{tableName}", ConsoleColor.Green, ConsoleColor.Black)
-                .WithColumn("Id", "Date", "StartTime", "EndTime", "Duration")
+                .WithTitle($"Stack Table", ConsoleColor.Green, ConsoleColor.Black)
+                .WithColumn("Id", "Stack Name")
                 .WithMinLength(new Dictionary<int, int> {
                     { 1, 25 },
                     { 2, 25 }

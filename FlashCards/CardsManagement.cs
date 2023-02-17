@@ -6,29 +6,46 @@ using System.Threading.Tasks;
 
 namespace FlashCards
 {
-    public class CardsManagement : ICommonFeatures
-    {
-        private int _cardId;
+    public class CardsManagement : TableType
+    {        
         private string _cardFront;
         private string _cardBack;
 
-        public CardsManagement(string cardFront, string cardBack)
-        {            
-            _cardFront = cardFront;
-            _cardBack = cardBack;
+        public string CardFront
+        {
+            get
+            {
+                return _cardFront;
+            }
+            set
+            {
+                _cardFront= value;
+            }
+        }
+        
+        public string CardBack
+        {
+            get
+            {
+                return _cardBack;
+            }
+            set
+            {
+                _cardFront = value;
+            }
         }
 
-        public void GetComponent()
+        public override void Insert()
         {
 
         }
 
-        public void UpdateComponent()
+        public override void Update()
         {
 
         }
 
-        public void DeleteComponent()
+        public override void Delete()
         {
 
         }

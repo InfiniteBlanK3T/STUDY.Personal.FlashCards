@@ -43,7 +43,7 @@ class Program
     }
     internal static void StackMenu()
     {
-        CRUDControllers build = new();
+        CrudControllers build = new();
         Console.Clear();
         Console.WriteLine("\n-------------------------------\n");
         Console.WriteLine("\tMANAGE STACKS");
