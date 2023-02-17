@@ -9,6 +9,8 @@ namespace FlashCards
     public class StacksManagement : TableType
     {        
         private string _stackName;
+        UserInputs input = new();
+        CrudControllers action = new();
 
         public string StackName
         {
@@ -22,13 +24,13 @@ namespace FlashCards
             }
         }
 
-        public override void Insert()
-        {
-
-        }
-
         public override void Update()
         {
+            var userIdInput = input.GetIntInputs("Id of stack you want to update: ");
+            if (userIdInput == 0) return;
+
+            action.Update("stacks", userIdInput);
+            return;
 
         }
 

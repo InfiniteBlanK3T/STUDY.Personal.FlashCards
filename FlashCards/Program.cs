@@ -7,6 +7,8 @@ namespace Flashcards;
 
 class Program
 {
+    static DatabaseCreate database = new();
+    
     static void Main()
     {
         bool endApp = false;
@@ -44,6 +46,7 @@ class Program
     internal static void StackMenu()
     {
         CrudControllers build = new();
+        StacksManagement stack = new();
         Console.Clear();
         Console.WriteLine("\n-------------------------------\n");
         Console.WriteLine("\tMANAGE STACKS");
@@ -62,11 +65,12 @@ class Program
         {
             case "1":
                 UserInputs ip = new();
-                var cardTableName = ip.GetStringInputs("Your stack name is: ");
-                DatabaseCreate db = new(cardTableName);
-                Console.ReadLine();
+                var newCardTableName = ip.GetStringInputs("Your stack name is: ");
+                database.CardTableName = newCardTableName;
+                database.InsertStackCreateCardTable();
                 break;
             case "2":
+                stack.Update();
                 break;
             case "3":
                 break;

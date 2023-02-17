@@ -21,8 +21,6 @@ namespace FlashCards
                 return _id; 
             } 
         }
-
-        public abstract void Insert();
         public abstract void Update();
         public abstract void Delete();
 

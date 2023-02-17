@@ -35,7 +35,7 @@ namespace FlashCards
             }
         }
 
-        public override void Insert()
+        public void Insert()
         {
 
         }

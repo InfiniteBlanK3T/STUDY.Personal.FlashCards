@@ -17,15 +17,16 @@ namespace FlashCards
         public DatabaseCreate(string tableName)
         {
             _cardTableName= tableName;
-            CreateTables();
+            CreateStackTable();
         }
+        public DatabaseCreate() : this("default") { }
 
         public string CardTableName
         {
             get { return _cardTableName; }
             set { _cardTableName = value; }
         }
-        public void CreateTables()
+        public void CreateStackTable()
         {            
             using var connection = new SqlConnection(connectionString);
             connection.Open();
@@ -36,9 +37,22 @@ namespace FlashCards
                 JOIN sys.schemas s ON (t.schema_id = s.schema_id) 
                 WHERE s.name = 'dbo' AND t.name = 'stacks')
                 CREATE TABLE stacks (
-                stack_Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+                Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
                 stack_name VARCHAR(55)
                 );";
+            try
+            {
+                makeStackTable.ExecuteNonQuery();                              
+            }
+            catch (Exception ex) 
+            {                
+                Console.WriteLine("Input Invalid. Error: " + ex.Message); 
+            }
+        }
+        public void InsertStackCreateCardTable()
+        {
+            using var connection = new SqlConnection(connectionString);
+            connection.Open();
 
             var insertEntryToStackToTable = connection.CreateCommand();
             insertEntryToStackToTable.CommandText =
@@ -51,17 +65,19 @@ namespace FlashCards
                 JOIN sys.schemas s on (t.schema_id = s.schema_id)
                 WHERE s.name = 'dbo' AND t.name = '{CardTableName}')
                 CREATE TABLE {CardTableName} (
-                card_Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+                Id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
                 card_front VARCHAR(255),
                 card_back VARCHAR(255)
                 );";
             try
             {
-                makeStackTable.ExecuteNonQuery();
                 makeCardTable.ExecuteNonQuery();
-                insertEntryToStackToTable.ExecuteNonQuery();                               
+                insertEntryToStackToTable.ExecuteNonQuery();
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }            
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

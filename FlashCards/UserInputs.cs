@@ -20,5 +20,21 @@ namespace FlashCards
             }
             return input;
         }
+        public int GetIntInputs(string prompt)
+        {
+            Console.Write(prompt);
+            string numberInput = Console.ReadLine();
+
+            while (!int.TryParse(numberInput, out _) || Convert.ToInt32(numberInput) < 0)
+            {
+                Console.Write("\n\nInvalid number. Try again: ");
+                numberInput = Console.ReadLine();
+
+            }
+            int finalInput = Convert.ToInt32(numberInput);
+            return finalInput;
+
+
+        }
     }
 }
